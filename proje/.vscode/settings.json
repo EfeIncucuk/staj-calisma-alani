@@ -1,0 +1,9 @@
+{
+  // Ayni ayarin kopyasi. Sebebi: VS Code workspace ayarlarini ACTIGIN
+  // klasorde arar. "proje" klasorunu kendi penceresinde acarsan
+  // ustteki Aaa\.vscode\settings.json devrede olmaz, bu dosya devreye girer.
+  //
+  // Aciklamanin tamami: Aaa\.vscode\settings.json
+  "mssql.intelliSense.enableErrorChecking": false,
+  "dotnet.preferCSharpExtension": true
+}

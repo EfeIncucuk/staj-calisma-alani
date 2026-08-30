@@ -1,0 +1,16 @@
+# PostgreSQL - tekrar indirilebilir / yerel durum
+pgsql/
+pgdata/
+pgsql.log
+
+# .NET derleme cikitilari
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Editor
+.vs/
+*.user

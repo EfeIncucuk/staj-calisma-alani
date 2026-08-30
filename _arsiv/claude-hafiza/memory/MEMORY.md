@@ -1,0 +1,7 @@
+- [Efe — stajyer, AGLDN-989](efe-stajyer-agldn-989.md) — kim olduğu, görevi ve neredeyse sıfırdan başladığı yığın.
+- [Kodu kendisi yazmak istiyor](efe-kodu-kendisi-yazmak-istiyor.md) — özellik kodu yazma; plan, kavram ve ortam kurulumu serbest.
+- [Sıfırdan kurulum kararı](sifirdan-kurulum-karari.md) — her katmanı kendi kuruyor; practice/ sadece referans, portlar ayrı, 10 fazlık roadmap.
+- [.NET 3.1 / VS Code eklenti uyumsuzluğu](dotnet-31-vscode-devkit-uyumsuzlugu.md) — tek SDK 3.1, Dev Kit çalışmıyor, C# eklentisi şu an hiç kurulu değil.
+- [.NET temelleri kılavuzu + ders notları](dotnet-temelleri-kilavuzu.md) — Faz 3+4'ü açan iki artifact, örnek alan kuralı ve Efe'nin backend'de kaldığı yer.
+- [Kavramları sıfırdan anlat](kavramlari-sifirdan-anlat.md) — "şunu ekle" demeden önce: bu nedir, neden şimdi, nasıl eklenir.
+- [proje-v2 / AglGlobal kararları](proje-v2-aglglobal.md) — ikinci tur: .NET 8 + EF code-first, 4 proje, iki modül, JWT; 14 fazlık yol haritası.

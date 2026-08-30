@@ -1,0 +1,60 @@
+{
+  // Projeleri C# Dev Kit yerine sadece C# eklentisinin yuklemesini saglar.
+  //
+  // NEDEN GEREKLI:
+  // Backend projesi netcoreapp3.1 hedefliyor ve makinede kurulu tek SDK 3.1
+  // (MSBuild 16.7, 2020 surumu). C# Dev Kit bu kadar eski bir proje/SDK
+  // ikilisini desteklemiyor; sonucu su iki hata oluyordu:
+  //     "Failed to monitor project loading status."
+  //     "Failed to restore NuGet packages for the solution."
+  //
+  // Ikisi de derleyici hatasi DEGIL - "dotnet build" 0 hata veriyor,
+  // NuGet paketleri komut satirindan sorunsuz restore ediliyor.
+  // Sorun tamamen editorun proje yukleme katmanindaydi.
+  //
+  // Bu ayari degistirdikten sonra pencereyi yenilemek gerekiyor:
+  //     Ctrl+Shift+P  ->  Developer: Reload Window
+  //
+  // NOT: Dev Kit kaldirildiktan sonra bu ayar islevsiz kaldi (kaldirilan bir
+  // eklentiyi devre disi birakmaya gerek yok). Dev Kit'i bir gun geri kurarsan
+  // yine gerekli olacagi icin duruyor.
+  "dotnet.preferCSharpExtension": true,
+
+  // Dil sunucusunu Roslyn yerine OmniSharp'a cevirir.
+  //
+  // NEDEN GEREKLI:
+  // C# eklentisinin (v2.140) varsayilan dil sunucusu Roslyn tabanli ve
+  // proje yuklemek icin MSBuild 17.11 istiyor. Bu makinede tek SDK 3.1.426,
+  // yani MSBuild 16.7. Uyusmadigi icin proje hic yuklenmiyor ve IntelliSense,
+  // Ctrl+. , goto definition calismiyor. Belirti:
+  //     "Failed to monitor project loading status."
+  //     OpenApiInfo icin Ctrl+. hicbir sey onermiyor
+  //
+  // Roslyn dil sunucusunun kendisi calisiyor (net10.0 hedefliyor ve o runtime
+  // vscode-dotnet-runtime tarafindan indirilmis: 10.0.11). Sorun sunucunun
+  // baslamamasi degil, PROJEYI ACAMAMASI.
+  //
+  // ONEMLI: Bu ayar C# Dev Kit kurulu oldugu surece YOK SAYILIR. Eklentinin
+  // kendi aciklamasi soyle diyor:
+  //     "This option will not be honored with C# Dev Kit installed."
+  // Bu yuzden Dev Kit kaldirildi. Devre disi birakmak yetmiyor.
+  //
+  // Degistirdikten sonra:  Developer: Reload Window  (OmniSharp ~60 MB indirir)
+  "dotnet.server.useOmnisharp": true,
+
+  // SQL dosyalarindaki YANLIS hata isaretlerini kapatir.
+  //
+  // NEDEN GEREKLI:
+  // Kurulu "ms-mssql.mssql" eklentisi Microsoft SQL Server icin yazilmis ve
+  // .sql dosyalarini T-SQL grameriyle denetliyor. Biz PostgreSQL yaziyoruz.
+  // Iki lehce farkli oldugu icin gecerli PostgreSQL kodu hatali isaretleniyor:
+  //     "Incorrect syntax near '::'"        -> PostgreSQL cast operatoru
+  //     "Incorrect syntax near '3'"         -> int4 / int8 T-SQL tipi degil
+  //     "Incorrect syntax near '\"Id\"'"      -> CONSTRAINT satirlari
+  //
+  // Ayni dosyayi psql calistirdiginda 0 hata veriyor. Yani isaretler yanlis.
+  // Dogru kodu kirmizi gosteren bir denetim, ogrenirken zararli - kapatildi.
+  //
+  // IntelliSense (otomatik tamamlama) acik kaliyor, sadece hata denetimi kapali.
+  "mssql.intelliSense.enableErrorChecking": false
+}

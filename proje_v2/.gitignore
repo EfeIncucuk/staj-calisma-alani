@@ -1,0 +1,15 @@
+# .NET derleme ciktilari
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Editor
+.vs/
+.idea/
+*.user
+
+# Yerel gizli ayarlar (JWT secret vb. user-secrets disinda kalirsa)
+appsettings.Development.local.json

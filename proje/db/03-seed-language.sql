@@ -1,0 +1,87 @@
+-- =====================================================================
+--  Language  -  72 satir
+--
+--  URETILMIS DOSYA. Elle duzenlemeyin.
+--  Kaynak: db/generate-seed.mjs   ->   node db/generate-seed.mjs
+--
+--  RecordStatus = -1 olanlar dil dropdown'inda GORUNMEYECEK.
+--  Bazi ulkeler pasif bir dile isaret ediyor - duzenleme formunda
+--  mevcut degerin listede olmamasi durumu bilincli olarak birakildi.
+--  OrgName her zaman NULL: kaynak veride dilin kendi dilindeki adi yok.
+-- =====================================================================
+
+insert into "SystemAdmin"."Language"
+    ("Code", "Name", "EngName", "OrgName", "RecordStatus")
+values
+    ('nld', 'Dutch', 'Dutch', NULL, -1),
+    ('prs', 'Dari', 'Dari', NULL, 1),
+    ('por', 'Portuguese', 'Portuguese', NULL, 1),
+    ('eng', 'English', 'English', NULL, 1),
+    ('swe', 'Swedish', 'Swedish', NULL, 1),
+    ('sqi', 'Albanian', 'Albanian', NULL, 1),
+    ('cat', 'Catalan', 'Catalan', NULL, 1),
+    ('ara', 'Arabic', 'Arabic', NULL, 1),
+    ('grn', 'Guaraní', 'Guaraní', NULL, 1),
+    ('hye', 'Armenian', 'Armenian', NULL, 1),
+    ('fra', 'French', 'French', NULL, 1),
+    ('bar', 'Austro-Bavarian German', 'Austro-Bavarian German', NULL, 1),
+    ('aze', 'Azerbaijani', 'Azerbaijani', NULL, -1),
+    ('deu', 'German', 'German', NULL, 1),
+    ('ben', 'Bengali', 'Bengali', NULL, 1),
+    ('bul', 'Bulgarian', 'Bulgarian', NULL, 1),
+    ('bos', 'Bosnian', 'Bosnian', NULL, 1),
+    ('bel', 'Belarusian', 'Belarusian', NULL, 1),
+    ('bjz', 'Belizean Creole', 'Belizean Creole', NULL, 1),
+    ('aym', 'Aymara', 'Aymara', NULL, 1),
+    ('msa', 'Malay', 'Malay', NULL, 1),
+    ('dzo', 'Dzongkha', 'Dzongkha', NULL, 1),
+    ('nor', 'Norwegian', 'Norwegian', NULL, 1),
+    ('spa', 'Spanish', 'Spanish', NULL, 1),
+    ('zho', 'Chinese', 'Chinese', NULL, -1),
+    ('ell', 'Greek', 'Greek', NULL, 1),
+    ('ces', 'Czech', 'Czech', NULL, 1),
+    ('dan', 'Danish', 'Danish', NULL, 1),
+    ('ber', 'Berber', 'Berber', NULL, 1),
+    ('est', 'Estonian', 'Estonian', NULL, 1),
+    ('amh', 'Amharic', 'Amharic', NULL, 1),
+    ('fin', 'Finnish', 'Finnish', NULL, 1),
+    ('kat', 'Georgian', 'Georgian', NULL, 1),
+    ('kal', 'Greenlandic', 'Greenlandic', NULL, 1),
+    ('cha', 'Chamorro', 'Chamorro', NULL, 1),
+    ('hrv', 'Croatian', 'Croatian', NULL, 1),
+    ('hun', 'Hungarian', 'Hungarian', NULL, -1),
+    ('ind', 'Indonesian', 'Indonesian', NULL, 1),
+    ('fas', 'Persian (Farsi)', 'Persian (Farsi)', NULL, 1),
+    ('isl', 'Icelandic', 'Icelandic', NULL, 1),
+    ('ita', 'Italian', 'Italian', NULL, 1),
+    ('jpn', 'Japanese', 'Japanese', NULL, 1),
+    ('kaz', 'Kazakh', 'Kazakh', NULL, 1),
+    ('kir', 'Kyrgyz', 'Kyrgyz', NULL, 1),
+    ('khm', 'Khmer', 'Khmer', NULL, 1),
+    ('kor', 'Korean', 'Korean', NULL, 1),
+    ('lao', 'Lao', 'Lao', NULL, 1),
+    ('sin', 'Sinhala', 'Sinhala', NULL, 1),
+    ('lit', 'Lithuanian', 'Lithuanian', NULL, -1),
+    ('lav', 'Latvian', 'Latvian', NULL, 1),
+    ('ron', 'Romanian', 'Romanian', NULL, 1),
+    ('div', 'Maldivian', 'Maldivian', NULL, 1),
+    ('mkd', 'Macedonian', 'Macedonian', NULL, 1),
+    ('mya', 'Burmese', 'Burmese', NULL, 1),
+    ('cnr', 'Montenegrin', 'Montenegrin', NULL, 1),
+    ('mon', 'Mongolian', 'Mongolian', NULL, 1),
+    ('cal', 'Carolinian', 'Carolinian', NULL, 1),
+    ('afr', 'Afrikaans', 'Afrikaans', NULL, 1),
+    ('nno', 'Norwegian Nynorsk', 'Norwegian Nynorsk', NULL, 1),
+    ('nep', 'Nepali', 'Nepali', NULL, 1),
+    ('pol', 'Polish', 'Polish', NULL, -1),
+    ('rus', 'Russian', 'Russian', NULL, 1),
+    ('srp', 'Serbian', 'Serbian', NULL, 1),
+    ('slk', 'Slovak', 'Slovak', NULL, 1),
+    ('slv', 'Slovene', 'Slovene', NULL, 1),
+    ('crs', 'Seychellois Creole', 'Seychellois Creole', NULL, 1),
+    ('tha', 'Thai', 'Thai', NULL, 1),
+    ('tur', 'Turkish', 'Turkish', NULL, 1),
+    ('ukr', 'Ukrainian', 'Ukrainian', NULL, 1),
+    ('vie', 'Vietnamese', 'Vietnamese', NULL, 1),
+    ('bis', 'Bislama', 'Bislama', NULL, 1),
+    ('bwg', 'Chibarwe', 'Chibarwe', NULL, 1);

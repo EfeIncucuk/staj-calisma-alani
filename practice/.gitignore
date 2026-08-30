@@ -1,0 +1,18 @@
+# PostgreSQL ikilileri ve veri dizini - repoya girmemeli, cok buyuk
+pgsql/
+pgdata/
+pgsql.log
+tools/
+
+# .NET
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Editor
+.vs/
+.vscode/
+*.user

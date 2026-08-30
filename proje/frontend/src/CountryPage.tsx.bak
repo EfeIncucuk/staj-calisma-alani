@@ -1,0 +1,354 @@
+import { Row, Col } from 'antd'
+import { Card } from 'antd'
+import { Form } from 'antd'
+import { Input } from 'antd'
+import { Button, Space,Table,Modal,Select,message } from 'antd'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import type { ColumnsType } from 'antd/es/table'
+import FormItem from 'antd/es/form/FormItem'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+
+
+
+
+interface Country {
+	id: number
+	countryName: string
+	countryNameOfficial: string
+	countryNameOriginal: string
+	country2AlpCode: string
+	country3AlpCode: string
+	countryNumCode: number
+	currencyName: string | null
+	languageName: string | null
+	phoneCode: number | null
+	riskScore: number | null
+	accountingRegionCode: number | null
+	accountingRegionDesc: string | null
+}
+
+interface CurrencyDto {
+	id: number
+	currencyAlphaCode: string
+	currencyName: string
+}
+
+interface LanguageDto {
+	id: number
+	name: string
+}
+
+
+
+
+function CountryPage() {
+  const [countries,setCountries] = useState<Country[]>([])
+  const [form] = Form.useForm()
+	const [currencies, setCurrencies] = useState<CurrencyDto[]>([])
+	const [languages, setLanguages] = useState<LanguageDto[]>([])
+	const [duzenlenenId, setDuzenlenenId] = useState<number | null>(null)
+
+
+	const getir = async () => {
+      const cevap = await axios.get<Country[]>('/api/country')
+      setCountries(cevap.data)
+  }
+
+	const kaydet = (values: any) => {
+  Modal.confirm({
+    title: 'İşlemi kaydetmek istiyor musunuz?',
+    okText: 'Evet',
+    cancelText: 'Hayır',
+    onOk: async () => {
+			const gonderilecek = {
+			  ...values,
+			  countryNumCode: Number(values.countryNumCode),
+			  riskScore: values.riskScore ? Number(values.riskScore) : null,
+			  phoneCode: values.phoneCode ? Number(values.phoneCode) : null,
+			}
+			
+			try {
+						if (duzenlenenId === null) {
+							await axios.post('/api/country', gonderilecek)
+							message.success('Kayıt eklendi')
+						} else {
+							await axios.put(`/api/country/${duzenlenenId}`, gonderilecek)
+							message.success('Kayıt güncellendi')
+						}
+			    form.resetFields()
+			    await getir()
+			  } catch (hata) {
+			    if (axios.isAxiosError(hata) && hata.response) {
+			      if (hata.response.status === 409) {
+			        message.error('Bu ülke zaten kayıtlı')
+			      } else if (hata.response.status === 400) {
+			        message.error('Girilen bilgilerde hata var')
+			      } else {
+			        message.error('Kayıt eklenemedi')
+			      }
+			    } else {
+			      message.error('Sunucuya ulaşılamıyor')
+			    }
+			  }
+			}
+   	})
+ 	}
+
+	const duzenle = async (id: number) => {
+		const cevap = await axios.get(`/api/country/${id}`)
+		form.setFieldsValue(cevap.data)
+		setDuzenlenenId(id)
+	}
+
+	const sil = (id: number) => {
+		Modal.confirm({
+			title: 'Kaydı silmek istiyor musunuz?',
+			okText: 'Evet',
+			cancelText: 'Hayır',
+			okButtonProps: { danger: true },
+			onOk: async () => {
+				try {
+					await axios.delete(`/api/country/${id}`)
+					message.success('Kayıt silindi')
+
+					if (duzenlenenId === id) {
+						form.resetFields()
+						setDuzenlenenId(null)
+					}
+
+					await getir()
+				} catch {
+					message.error('Kayıt silinemedi')
+				}
+			},
+		})
+	}
+
+
+
+	
+	useEffect(() => {
+			getir()
+			axios.get<CurrencyDto[]>('/api/currency').then(c => setCurrencies(c.data))
+  		axios.get<LanguageDto[]>('/api/language').then(c => setLanguages(c.data))
+		}, [])
+
+	
+	const currencyOptions = currencies.map((c) => ({
+  value: c.id,
+  label: `${c.currencyAlphaCode}`,
+	}))
+
+	const languageoptions = languages.map((l) => ({
+  value: l.id,
+  label: `${l.name}`,
+	}))
+
+	const regionOptions = [
+  { value: 'Londra', label: 'Londra' },
+  { value: 'Yurtdışı Ülke', label: 'Yurtdışı Ülke' },
+	]
+	
+	
+	const columns: ColumnsType<Country> =[
+			{title: 'Ülke Adı',  dataIndex: 'countryName', key: 'name'},
+			{title: 'Yerel Ülke Adı',  dataIndex: 'countryNameOfficial', key: 'nameofc'},
+			{title: 'Orijinal Ülke Adı',  dataIndex: 'countryNameOriginal', key: 'nameorg'},
+			{title: 'Ülke kodu(2)',  dataIndex: 'country2AlpCode', key: '2code'},
+			{title: 'Ülke kodu(3)',  dataIndex: 'country3AlpCode', key: '3code'},
+			{title: 'Ülke kodu',  dataIndex: 'countryNumCode', key: 'numcode'},
+			{title: 'Para Birimi',  dataIndex: 'currencyName', key: 'cur'},
+			{title: 'Dili',  dataIndex: 'languageName', key: 'lan'},
+			{title: 'Telefon Kodu',  dataIndex: 'phoneCode', key: 'tel'},
+			{title: 'Risk Skoru',  dataIndex: 'riskScore', key: 'risk'},
+			{title: 'Bölge Kodu',  dataIndex: 'accountingRegionCode', key: 'arc'},
+			{title: 'Bölge Adı',  dataIndex: 'accountingRegionDesc', key: 'ard'},
+			{
+				title: 'Aksiyon',
+				key: 'aksiyon',
+				fixed: 'right',
+				width: 100,
+				render: (_, row) => (
+					<Space>
+						<Button
+							type="text"
+							icon={<EditOutlined />}
+							onClick={() => duzenle(row.id)}
+						/>
+						<Button
+							type="text"
+							danger
+							icon={<DeleteOutlined />}
+							onClick={() => sil(row.id)}
+						/>
+					</Space>
+				),
+			},
+
+		]
+
+  return(
+	<div style={{padding:24}}>
+    <Card style={{marginBottom: 16}}>
+      <Form layout="vertical" form={form} onFinish={kaydet}>
+        <Row gutter={[16, 16]}>
+          <Col span={5}>
+          <Form.Item   
+              name="countryName"
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              {max: 100, message: 'En fazla 100 karakter'},
+              ]}
+          >
+              <Input maxLength={100} placeholder="Ülke adı"/>
+          </Form.Item>
+          </Col>
+					<Col span={5}>
+          <Form.Item   
+              name="countryNameOfficial"
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              {max: 100, message: 'En fazla 100 karakter'},
+              ]}
+          >
+              <Input maxLength={100} placeholder="Resmi Ülke İsmi"/>
+          </Form.Item>
+          </Col>
+					<Col span={6}>
+          <Form.Item   
+              name="countryNameOriginal"
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              {max: 100, message: 'En fazla 100 karakter'},
+              ]}
+          >
+              <Input maxLength={100} placeholder="Orijinal Ülke İsmi"/>
+          </Form.Item>
+          </Col>
+          <Col span={6}>
+          <Form.Item   
+              name="country2AlpCode"
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              {max: 2, message: 'En fazla 2 karakter'},
+							{len: 2},
+              ]}
+          >
+              <Input maxLength={2} placeholder='Ülke Kodu 2 Harf'/>
+          </Form.Item>
+          </Col>
+					<Col span={6}>
+          <Form.Item   
+              name="country3AlpCode"
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              {max: 3, message: 'En fazla 3 karakter'},
+							{len: 3},
+              ]}
+          >
+              <Input maxLength={3} placeholder='Ülke Kodu 3 Harf'/>
+          </Form.Item>
+          </Col>
+					<Col span={6}>
+          <Form.Item   
+              name="countryNumCode"
+              normalize={(values) => (values ?? '').replace(/\D/g, '')}
+              rules={[
+              {required: true, message: 'Zorunlu alan!'},
+              ]}
+          >
+              <Input maxLength={6} placeholder='Ülke Kodu'/>
+          </Form.Item>
+          </Col>
+					<Col>
+						<FormItem name="currencyId">
+						<Select
+              options={currencyOptions}
+              placeholder="Para birimi"
+              showSearch
+              optionFilterProp='label'
+              allowClear
+            	/>
+						</FormItem>
+					</Col>
+					<Col span={6}>
+          <Form.Item   
+              name="phoneCode"
+              normalize={(values) => (values ?? '').replace(/\D/g, '')}
+          >
+              <Input maxLength={6} placeholder='Telefon Kodu'/>
+          </Form.Item>
+          </Col>
+					<Col span={6}>
+						<FormItem name ="languageId">
+						<Select
+              options={languageoptions}
+              placeholder="Dil"
+              showSearch
+              optionFilterProp='label'
+              allowClear
+            	/>
+						</FormItem>
+					</Col>
+          <Col span={6}>
+          <Form.Item   
+              name="riskScore"
+              normalize={(values) => (values ?? '').replace(/[^1-5]/g, '')}
+              rules={[
+              {max: 1, message: 'En fazla 1 karakter'},
+              {pattern: /^[1-5]$/, message: '1-5 arası bir değer girin' },
+              ]}
+          >
+              <Input maxLength={1} placeholder='Risk Skoru'/>
+          </Form.Item>
+          </Col>
+					<Col span={6}>
+						<FormItem name="accountingRegionDesc">
+						<Select
+              options={regionOptions}
+              placeholder="Bölge"
+              showSearch
+              optionFilterProp='label'
+              allowClear
+            	/>
+						</FormItem>
+					</Col>
+      	</Row>
+				<Row justify="end">
+				  <Space>
+				    <Button
+							type="primary"
+							onClick={() => {
+								form.resetFields()
+								setDuzenlenenId(null)
+							}}
+						>
+							Temizle
+						</Button>
+				    <Button type="primary" htmlType="submit">{duzenlenenId === null ? 'Kaydet' : 'Güncelle'}</Button>
+				  </Space>
+				</Row>
+  		</Form>
+    </Card>
+
+		<Card title="Ülke Tanımları" extra={<Button>Excel'e Aktar</Button>}>
+			<Table 
+				size="small" 
+				columns={columns} 
+				dataSource={countries} 
+				rowKey="id"
+				scroll={{x: 'max-content', y:400 }}
+				pagination={false}
+				footer={() => (
+				  <div style={{ textAlign: 'right' }}>
+				    Rows: <b>{countries.length}</b>
+				  </div>
+				)}
+			/>
+		</Card>
+	</div>
+  )
+}
+
+export default CountryPage

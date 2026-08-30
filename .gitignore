@@ -1,0 +1,23 @@
+# ---------------------------------------------------------------
+# Kok depo .gitignore - proje/, proje_v2/, practice/, deneme/ hepsi icin
+# ---------------------------------------------------------------
+
+# Tasinabilir PostgreSQL kurulumu ve veri klasoru.
+# Tekrar indirilebilir / reset-db.ps1 ile yeniden uretilebilir. Bkz. KURULUM.md
+pgsql/
+pgdata/
+pgsql.log
+
+# .NET derleme ciktilari
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Editor / IDE yerel durumu
+.vs/
+.idea/
+*.user
+*.suo
